@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "rememberKey Experimental",
+  "version": "0.1.0",
+  "identifier": "app.rememberkey.experimental",
+  "build": {
+    "frontendDist": "../ui"
+  },
+  "app": {
+    "windows": [],
+    "security": {
+      "csp": "default-src 'none'; style-src 'self'; img-src 'self'; connect-src 'none'; script-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'",
+      "capabilities": []
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "shortDescription": "Experimental safety preview only; not a working vault",
+    "longDescription": "Local static experimental preview. No login, server sync, native credential vault, or SQLite storage is implemented. Use the HTTPS Web/PWA for the working application."
+  }
+}

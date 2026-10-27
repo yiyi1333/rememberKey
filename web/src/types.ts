@@ -1,0 +1,12 @@
+export type Wrap = { nonce: string; ciphertext: string };
+export type KeyBundle = {version:1;salt:string;passwordWrap:Wrap;recoveryWrap:Wrap;privateWrap:Wrap};
+export type Account = {accountId:string;username:string;signPublicKey:string;boxPublicKey:string;keyBundle:KeyBundle;bundleVersion?:number;role?:string};
+export type LocalAccount = Account & {deviceId:string;deviceName:string;devicePublicKey:string;deviceWrap:Wrap};
+export type Keys = {root:Uint8Array;signPrivate:Uint8Array;boxPrivate:Uint8Array;devicePrivate:Uint8Array};
+export type SecretRecord = {name:string;provider:string;secret:string;url:string;tags:string[];notes:string;expiresAt:string};
+export type Operation = {operationId:string;id:string;baseRevision:number;deleted:boolean;envelope:string|null;signature:string};
+export type RemoteRecord = Operation & {revision:number;seq?:number};
+export type StoredRecord = RemoteRecord & {pending?:boolean};
+export type PendingOperation = Operation & {conflict?:RemoteRecord|null};
+export type Device = {id:string;name:string;createdAt:string;revokedAt:string|null};
+export type AdminUser = {accountId:string;username:string;role:string;disabled:boolean;createdAt:string};

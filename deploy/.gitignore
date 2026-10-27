@@ -1,0 +1,6 @@
+.env
+.operation.lock
+data/
+caddy-data/
+caddy-config/
+backups/

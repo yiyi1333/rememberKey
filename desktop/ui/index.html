@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; connect-src 'none'; script-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+  <title>rememberKey · Experimental</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body><main>
+  <div class="badge">EXPERIMENTAL · 安全预览，非可用密码库</div>
+  <h1>rememberKey <span>桌面工程</span></h1>
+  <p class="intro">当前只提供本地打包的静态说明页。桌面登录、解锁、存储和同步均未实现；请使用自建 HTTPS 站点的 Web / PWA。</p>
+  <section><h2>为什么不直接加载服务器？</h2>
+    <p>远程网页不能获得桌面原生命令权限。我们不把远程地址装进特权 webview，也不启动 localhost 服务来转发密钥。</p>
+    <p>Web 使用同源 Origin 校验及 Secure、HttpOnly、SameSite=Strict 刷新 cookie。Tauri 本地页面不是服务器同源，不能直接照搬跨源会话，更不能通过降低 cookie 或 CORS 防护“修复”。</p>
+  </section>
+  <section><h2>尚未实现的必要能力</h2><ul>
+    <li>经过验证、事务化的原生 SQLite 加密信封及 outbox 接口。</li>
+    <li>操作系统凭据库中的会话保护、可信服务器 origin 绑定与刷新令牌轮换。</li>
+    <li>受限 IPC、安全退出和自动锁定、端到端桌面安全测试。</li>
+    <li>签名发布、macOS 公证和平台安装验收。</li>
+  </ul></section>
+  <p class="boundary">此预览不接受密码、恢复码或密钥，不连接网络，不访问用户文件，不提供任意命令接口。构建成功不代表上述能力已经完成。</p>
+</main></body></html>

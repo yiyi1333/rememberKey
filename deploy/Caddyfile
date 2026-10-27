@@ -1,0 +1,29 @@
+{
+	email {$ACME_EMAIL}
+	admin off
+	http_port 8080
+	https_port 8443
+	servers {
+		protocols h1 h2
+	}
+}
+
+{$RK_DOMAIN} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options nosniff
+		Referrer-Policy no-referrer
+		X-Frame-Options DENY
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+		-Server
+	}
+	request_body {
+		max_size 2MB
+	}
+	reverse_proxy app:8080 {
+		header_up -X-Forwarded-For
+		header_up -X-Real-IP
+	}
+}

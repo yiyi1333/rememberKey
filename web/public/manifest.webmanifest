@@ -1,0 +1,1 @@
+{"id":"/","name":"rememberKey · 加密密钥库","short_name":"rememberKey","description":"端到端加密的个人密钥空间","lang":"zh-CN","start_url":"/","scope":"/","display":"standalone","background_color":"#f6f8f7","theme_color":"#192f28","icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}

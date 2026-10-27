@@ -1,0 +1,38 @@
+# 便携工具链与本地临时产物
+# 这些目录不属于交付源码，可随时删除后重新生成。
+
+# 便携工具链（由 Lead 下载并校验官方 SHA256）
+.tools/go/
+.tools/go.zip
+.tools/out/
+.tools/data/
+.tools/data2/
+.tools/data3/
+
+# Go 构建缓存（沙箱内默认缓存不可写，需指向工作区）
+server/.cache/
+
+# 前端临时目录（系统 TEMP 不可写时的替代）
+web/.tmp/
+
+# 依赖与构建产物
+web/node_modules/
+web/dist/
+web/coverage/
+
+# 运行时数据与本地配置
+deploy/.env
+deploy/data/
+deploy/caddy-data/
+deploy/caddy-config/
+deploy/backups/
+
+# 编辑器与系统文件
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+.github/
+.tools/
+.cache/
