@@ -8,24 +8,51 @@
 .tools/data/
 .tools/data2/
 .tools/data3/
+.tools/localdata/
+.tools/inspect/
+.tools/probe/
+.tools/*.sql
+.tools/migration/
+.tools/migration-tmp/
+.tools/go-cache/
+.tools/go-modcache/
+tools/migrate/.env*
+*.migration-report.json
 
 # Go 构建缓存（沙箱内默认缓存不可写，需指向工作区）
-server/.cache/
+legacy/server/.cache/
 
 # 前端临时目录（系统 TEMP 不可写时的替代）
 web/.tmp/
+
+# Cloudflare Worker / Pages 与本地索引缓存
+/.wrangler/
+/.xcodemap/
+worker/node_modules/
+worker/.wrangler/
+worker/.tmp/
+worker/.dev.vars
 
 # 依赖与构建产物
 web/node_modules/
 web/dist/
 web/coverage/
+web/.wrangler/
+web/.dev.vars*
+.tmp/
 
 # 运行时数据与本地配置
-deploy/.env
-deploy/data/
-deploy/caddy-data/
-deploy/caddy-config/
-deploy/backups/
+legacy/deploy/.env
+legacy/deploy/mysql/
+legacy/deploy/data/
+legacy/deploy/caddy-data/
+legacy/deploy/caddy-config/
+legacy/deploy/backups/
+
+# 数据库文件（迁移前的 SQLite 遗留，勿提交）
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
 
 # 编辑器与系统文件
 .DS_Store
@@ -33,6 +60,3 @@ Thumbs.db
 *.swp
 .idea/
 .vscode/
-.github/
-.tools/
-.cache/

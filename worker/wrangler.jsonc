@@ -1,0 +1,54 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rememberkey-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "rememberkey",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "RK_ORIGIN": "http://127.0.0.1:8788"
+  },
+  "dev": {
+    "port": 8787
+  },
+  "env": {
+    "preview": {
+      "name": "rememberkey-api-preview",
+      "workers_dev": false,
+      "preview_urls": false,
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "rememberkey-preview",
+          "database_id": "00000000-0000-0000-0000-000000000000",
+          "migrations_dir": "migrations"
+        }
+      ],
+      "vars": {
+        "RK_ORIGIN": "https://staging.rememberkey-web.pages.dev"
+      }
+    },
+    "production": {
+      "name": "rememberkey-api",
+      "workers_dev": false,
+      "preview_urls": false,
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "rememberkey",
+          "database_id": "00000000-0000-0000-0000-000000000000",
+          "migrations_dir": "migrations"
+        }
+      ],
+      "vars": {
+        "RK_ORIGIN": "https://rememberkey-web.pages.dev"
+      }
+    }
+  }
+}

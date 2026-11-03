@@ -1,0 +1,3 @@
+# Copy to .dev.vars for local development (`npm run dev` reads it automatically).
+# Only needed to bootstrap the first admin account on a fresh local D1 database.
+RK_BOOTSTRAP_TOKEN=dev-bootstrap-token-for-integration

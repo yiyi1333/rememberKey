@@ -1,0 +1,93 @@
+name: Verify web worker and deployment
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      RK_BASE: http://127.0.0.1:8788
+      # Only the isolated local D1 uses this one-time bootstrap token.
+      RK_BOOTSTRAP_TOKEN: dev-bootstrap-token-for-integration
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+          cache: npm
+          cache-dependency-path: |
+            web/package-lock.json
+            worker/package-lock.json
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+          cache-dependency-path: tools/migrate/go.sum
+      - name: Install, test and build web
+        working-directory: web
+        run: |
+          npm ci
+          npm test
+          npm run typecheck:pages
+          npm run build
+      - name: Install, typecheck and test worker
+        working-directory: worker
+        run: |
+          npm ci
+          npm run typecheck
+          npm test
+      - name: Test offline migration exporter
+        working-directory: tools/migrate
+        run: go test ./...
+      - name: Test migration import and verification scripts
+        env:
+          RK_RUN_LOCAL_D1: '1'
+        run: |
+          mkdir -p .tools/migration-tmp .tools/go-cache .tools/go-modcache
+          node worker/scripts/migration.node-tests.mjs
+      - name: Start local Pages and API Worker
+        run: |
+          node scripts/dev-cloudflare.mjs \
+            --persist-to /tmp/rememberkey-ci-d1 \
+            --bootstrap-token "$RK_BOOTSTRAP_TOKEN" \
+            > /tmp/rememberkey-cloudflare.log 2>&1 &
+          echo $! > /tmp/rememberkey-cloudflare.pid
+      - name: Poll Pages readiness
+        run: |
+          for attempt in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:8788/readyz > /dev/null; then
+              exit 0
+            fi
+            if ! kill -0 "$(cat /tmp/rememberkey-cloudflare.pid)" 2>/dev/null; then
+              echo "Local Cloudflare processes exited before becoming ready"
+              exit 1
+            fi
+            sleep 1
+          done
+          echo "timed out waiting for http://127.0.0.1:8788/readyz"
+          exit 1
+      - name: Run end-to-end protocol checks
+        run: node scripts/e2e.mjs
+      - name: Show Cloudflare log on failure
+        if: failure()
+        run: cat /tmp/rememberkey-cloudflare.log
+      - name: Stop local Pages and API Worker
+        if: always()
+        run: |
+          pid="$(cat /tmp/rememberkey-cloudflare.pid 2>/dev/null || true)"
+          if [ -n "$pid" ]; then
+            kill "$pid" 2>/dev/null || true
+            for attempt in $(seq 1 20); do
+              if ! kill -0 "$pid" 2>/dev/null; then
+                exit 0
+              fi
+              sleep 1
+            done
+            kill -9 "$pid" 2>/dev/null || true
+          fi

@@ -11,7 +11,7 @@ npm run build
 npm run dev
 ```
 
-开发 Vite 将 `/api` 代理至 `http://127.0.0.1:8080`；后端开发 `RK_ORIGIN` 必须与浏览器实际访问的 Vite Origin 一致。生产把 `dist` 交由同源后端静态服务；不要将登录、刷新 cookie 或 API 搬到第三方源。必须 HTTPS（localhost 开发例外）。推荐 CSP `script-src 'self' 'wasm-unsafe-eval'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'`，结合服务端完整响应头配置。libsodium 的 WASM 可能需要 `wasm-unsafe-eval`，不需要宽泛 `unsafe-eval`。
+完整的本地 Pages → Worker 链路从仓库根目录运行 `node scripts/dev-cloudflare.mjs`，浏览器访问 `http://127.0.0.1:8788`。单独使用 Vite 热更新时，`/api` 代理至 `http://127.0.0.1:8787`（`wrangler dev`），Worker 的 `RK_ORIGIN` 必须与 Vite Origin 一致，否则写请求返回 `403 origin_rejected`。生产由 Cloudflare Pages 提供 `dist`，Pages Function 通过 `API` Service binding 转发同源 API；不要将登录、刷新 cookie 或 API 搬到第三方源。必须 HTTPS（localhost 开发例外）。`public/_headers` 的 CSP 使用 `script-src 'self' 'wasm-unsafe-eval'` 支持 libsodium WASM，并保持 `connect-src 'self'`，不需要宽泛的 `unsafe-eval`。部署步骤见 [../docs/cloudflare-deployment.md](../docs/cloudflare-deployment.md)。
 
 ## 已实现的纵向切片
 

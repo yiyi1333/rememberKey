@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rememberkey-web",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-10-01",
+  "services": [{ "binding": "API", "service": "rememberkey-api" }],
+  "vars": { "RK_ORIGIN": "http://127.0.0.1:8788" },
+  "env": {
+    "preview": {
+      "services": [{ "binding": "API", "service": "rememberkey-api-preview" }],
+      "vars": { "RK_ORIGIN": "https://staging.rememberkey-web.pages.dev" }
+    },
+    "production": {
+      "services": [{ "binding": "API", "service": "rememberkey-api" }],
+      "vars": { "RK_ORIGIN": "https://rememberkey-web.pages.dev" }
+    }
+  }
+}

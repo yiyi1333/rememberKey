@@ -1,0 +1,92 @@
+name: rememberkey
+services:
+  app:
+    image: rememberkey:local
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    init: true
+    user: "10001:10001"
+    environment:
+      RK_ORIGIN: ${RK_ORIGIN:?Run scripts/deploy.sh first}
+      RK_BOOTSTRAP_TOKEN: ${RK_BOOTSTRAP_TOKEN:?Bootstrap token required}
+      # parseTime is required so the driver hands back time values the server
+      # can scan; loc=UTC keeps stored timestamps unambiguous.
+      RK_DB_DSN: ${RK_DB_USER:-rememberkey}:${RK_DB_PASSWORD:?Database password required}@tcp(db:3306)/${RK_DB_NAME:-rememberkey}?parseTime=true&charset=utf8mb4&loc=UTC
+      RK_WEB_DIR: /app/web
+      RK_DEV: "false"
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777,noexec,nosuid
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    mem_limit: 512m
+    stop_grace_period: 30s
+    depends_on:
+      db: {condition: service_healthy}
+    networks: [private]
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --innodb-buffer-pool-size=256M
+    environment:
+      MYSQL_DATABASE: ${RK_DB_NAME:-rememberkey}
+      MYSQL_USER: ${RK_DB_USER:-rememberkey}
+      MYSQL_PASSWORD: ${RK_DB_PASSWORD:?Database password required}
+      MYSQL_ROOT_PASSWORD: ${RK_DB_ROOT_PASSWORD:?Database root password required}
+    volumes:
+      - ./mysql:/var/lib/mysql
+    healthcheck:
+      # The application container waits on this, so it must prove the database
+      # accepts queries rather than merely that the process started.
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${RK_DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 768m
+    networks: [private]
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}
+  caddy:
+    image: caddy:2.10.2-alpine
+    restart: unless-stopped
+    user: "10001:10001"
+    environment:
+      RK_DOMAIN: ${RK_DOMAIN:?Public DNS hostname required}
+      ACME_EMAIL: ${ACME_EMAIL:?ACME contact email required}
+    ports:
+      - "80:8080"
+      - "443:8443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy-data:/data
+      - ./caddy-config:/config
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777,noexec,nosuid
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    mem_limit: 256m
+    depends_on:
+      app: {condition: service_healthy}
+    networks: [private, edge]
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}
+networks:
+  private:
+    internal: true
+  edge: {}

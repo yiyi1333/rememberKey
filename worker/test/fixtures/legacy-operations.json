@@ -1,0 +1,67 @@
+[
+  {
+    "name": "ordinary",
+    "operation": {
+      "operationId": "20000000-0000-4000-8000-000000000002",
+      "id": "30000000-0000-4000-8000-000000000003",
+      "baseRevision": 3,
+      "deleted": false,
+      "envelope": "{\"version\":1,\"nonce\":\"nonce\"}",
+      "signature": "c2lnbmF0dXJl"
+    },
+    "canonical": "{\"operationId\":\"20000000-0000-4000-8000-000000000002\",\"id\":\"30000000-0000-4000-8000-000000000003\",\"baseRevision\":3,\"deleted\":false,\"envelope\":\"{\\\"version\\\":1,\\\"nonce\\\":\\\"nonce\\\"}\",\"signature\":\"c2lnbmF0dXJl\"}",
+    "hash": "750239d310a1004f4344dfc3439ec2f416f693779e0d790014f3989fc55cf3c4"
+  },
+  {
+    "name": "deleted-null",
+    "operation": {
+      "operationId": "20000000-0000-4000-8000-000000000002",
+      "id": "30000000-0000-4000-8000-000000000003",
+      "baseRevision": 3,
+      "deleted": true,
+      "envelope": null,
+      "signature": "c2lnbmF0dXJl"
+    },
+    "canonical": "{\"operationId\":\"20000000-0000-4000-8000-000000000002\",\"id\":\"30000000-0000-4000-8000-000000000003\",\"baseRevision\":3,\"deleted\":true,\"envelope\":null,\"signature\":\"c2lnbmF0dXJl\"}",
+    "hash": "6b1e75411f3c43d6f858becf35fa7b8647795be81b376850ce72e88c29de3df4"
+  },
+  {
+    "name": "whitespace",
+    "operation": {
+      "operationId": "20000000-0000-4000-8000-000000000002",
+      "id": "30000000-0000-4000-8000-000000000003",
+      "baseRevision": 3,
+      "deleted": false,
+      "envelope": " { \"version\" : 1 } \n\t",
+      "signature": "c2lnbmF0dXJl"
+    },
+    "canonical": "{\"operationId\":\"20000000-0000-4000-8000-000000000002\",\"id\":\"30000000-0000-4000-8000-000000000003\",\"baseRevision\":3,\"deleted\":false,\"envelope\":\" { \\\"version\\\" : 1 } \\n\\t\",\"signature\":\"c2lnbmF0dXJl\"}",
+    "hash": "7126db4d627c29a60546a84f138a1f48a67b6b60b4172ef0d5fbb4eaeaa2a518"
+  },
+  {
+    "name": "html-unicode-escapes",
+    "operation": {
+      "operationId": "20000000-0000-4000-8000-000000000002",
+      "id": "30000000-0000-4000-8000-000000000003",
+      "baseRevision": 3,
+      "deleted": false,
+      "envelope": "{\"value\":\"\u003c\u003e\u0026中文\u2028\u2029\\\\\\\"\"}",
+      "signature": "c2lnbmF0dXJl"
+    },
+    "canonical": "{\"operationId\":\"20000000-0000-4000-8000-000000000002\",\"id\":\"30000000-0000-4000-8000-000000000003\",\"baseRevision\":3,\"deleted\":false,\"envelope\":\"{\\\"value\\\":\\\"\\u003c\\u003e\\u0026中文\\u2028\\u2029\\\\\\\\\\\\\\\"\\\"}\",\"signature\":\"c2lnbmF0dXJl\"}",
+    "hash": "cca0319c3045307f3eef65529236b6644467a6bf414b13f21a61ac92744585a3"
+  },
+  {
+    "name": "empty",
+    "operation": {
+      "operationId": "20000000-0000-4000-8000-000000000002",
+      "id": "30000000-0000-4000-8000-000000000003",
+      "baseRevision": 3,
+      "deleted": false,
+      "envelope": "",
+      "signature": "c2lnbmF0dXJl"
+    },
+    "canonical": "{\"operationId\":\"20000000-0000-4000-8000-000000000002\",\"id\":\"30000000-0000-4000-8000-000000000003\",\"baseRevision\":3,\"deleted\":false,\"envelope\":\"\",\"signature\":\"c2lnbmF0dXJl\"}",
+    "hash": "714f6867831dce0654fadb9dcfed043fb02ac290046597614d35005470c43002"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "name": "rememberkey-worker",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "db:migrate:local": "wrangler d1 migrations apply rememberkey --local --env=",
+    "db:migrate:preview": "wrangler d1 migrations apply rememberkey-preview --remote --env preview",
+    "db:migrate:production": "wrangler d1 migrations apply rememberkey --remote --env production"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261028.1",
+    "typescript": "5.7.3",
+    "vitest": "2.1.8",
+    "wrangler": "4.154.0"
+  }
+}
