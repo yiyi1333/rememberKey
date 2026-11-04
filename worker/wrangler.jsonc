@@ -7,7 +7,7 @@
     {
       "binding": "DB",
       "database_name": "rememberkey",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "18edc861-32bb-45e3-8f30-f7ea65861ae0",
       "migrations_dir": "migrations"
     }
   ],
@@ -26,7 +26,7 @@
         {
           "binding": "DB",
           "database_name": "rememberkey-preview",
-          "database_id": "00000000-0000-0000-0000-000000000000",
+          "database_id": "d3b84b3d-7263-4123-a1bd-40249bd7228b",
           "migrations_dir": "migrations"
         }
       ],
@@ -42,7 +42,7 @@
         {
           "binding": "DB",
           "database_name": "rememberkey",
-          "database_id": "00000000-0000-0000-0000-000000000000",
+          "database_id": "18edc861-32bb-45e3-8f30-f7ea65861ae0",
           "migrations_dir": "migrations"
         }
       ],
